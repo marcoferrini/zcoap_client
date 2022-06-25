@@ -530,11 +530,15 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
                             if(!opt){
                                 ESP_LOGE(TAG, "no size2 option in the received message");
                             }
-                            if(zh->obs_started)
+                            if(zh->obs_started){
                                 vosSemWait(zh->response->data_lock); /*the corresponding signal is done when the trasmission of the whole sequence ends*/
+                                zh->response->readable = 0; 
+                            }
                             zh->response->data = realloc(zh->response->data,*coap_opt_value(opt));
                             
                             memcpy(zh->response->data, data, data_len); 
+                            if(zh->obs_started)
+                                vosSemSignal(zh->response->data_lock);
                             zh->response->data_len = *coap_opt_value(opt);
 
 
@@ -542,17 +546,21 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
                             if(zh->obs_started)
                                 vosSemWait(zh->response->data_lock);
                             zh->response->data = realloc(zh->response->data, data_len);
-                            memcpy(zh->response->data, data, data_len); 
+                            memcpy(zh->response->data, data, data_len);
                             zh->response->data_len = data_len;
-                            /*if(zh->obs_started)
-                                vosSemSignal(zh->response->data_lock);*/
+                            if(zh->obs_started)
+                                vosSemSignal(zh->response->data_lock);
                         }
                         
 
                     }else{ /*it is not the first block of the sequence so zh->response->data is already pointing to a dinamic array of the appropriate size*/
+                        if(zh->obs_started)
+                                vosSemWait(zh->response->data_lock);
                         temp_data_pointer = zh->response->data + (COAP_OPT_BLOCK_SZX(block_opt)<<5)*block_num; 
                         /*now temp_data_pointer should point to the correct slot of the array*/
                         memcpy(temp_data_pointer, data, data_len); 
+                        if(zh->obs_started)
+                                vosSemSignal(zh->response->data_lock);
                     }
 
             }
@@ -599,25 +607,26 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
                 }
 
             }else{
-                if(zh->obs_started)
-                    vosSemSignal(zh->response->data_lock);
-                
+                zh->response->readable = 1;
                 zh->resp_wait = zh->doing_observe ? zh->obs_started : 0;
             }
             return;
             printf("\n");
-        } else{
+        }else{
 
             if (coap_get_data(received, &data_len, &data)) {
                 printf("Received: %.*s\n", (int)data_len, data);
             }
-            if(zh->obs_started)
+            if(zh->obs_started){
+                zh->response->readable = 1;
                 vosSemWait(zh->response->data_lock);
+            }
             zh->response->data = realloc(zh->response->data, data_len);
             memcpy(zh->response->data, data, data_len); 
             zh->response->data_len = data_len;
             if(zh->obs_started)
                 vosSemSignal(zh->response->data_lock);
+            ; 
         }
         
          
@@ -632,8 +641,7 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
     }
 
 end: 
-   zh->resp_wait = zh->doing_observe ? !coap_check_option(received,
-                                  COAP_OPTION_OBSERVE, &opt_iter) == NULL : 0;
+   zh->resp_wait = zh->doing_observe ? zh->obs_started : 0;
 
     return;
 }
@@ -731,13 +739,13 @@ int zcoap_client_create (zcoap_client_cfg_create_t *cfg)
 
         dtls_pki.version= COAP_DTLS_PKI_SETUP_VERSION;
 
-        dtls_pki.verify_peer_cert        = 1;
+        dtls_pki.verify_peer_cert        = 0; //1
         dtls_pki.require_peer_cert       = 1;
         dtls_pki.allow_self_signed       = 1;
         dtls_pki.allow_expired_certs     = 1;
 
-        dtls_pki.cert_chain_validation   = 1;
-        dtls_pki.cert_chain_verify_depth = 2;
+        dtls_pki.cert_chain_validation   = 0; //1
+        dtls_pki.cert_chain_verify_depth = 1; //should be 3
 
         dtls_pki.check_cert_revocation   = 1;
         dtls_pki.allow_no_crl            = 1;
@@ -878,6 +886,7 @@ int zcoap_client_request (zcoap_request_t *request, int zc, zcoap_response_t *re
 
     zh->response->data = NULL; 
     
+    
     //ESP_LOGD(TAG, "path =%s ", zh->request->path);
     //aggiorno il path 
 
@@ -976,7 +985,7 @@ int zcoap_client_request (zcoap_request_t *request, int zc, zcoap_response_t *re
                     zh->obs_started = 0; 
                     vosSemDestroy(zh->response->data_lock);
                     break; 
-                } else{
+                }else{
                     zh->obs_ms -= result;
 
                 }
@@ -1018,7 +1027,7 @@ int zcoap_client_observe(int zc,int obs_timeout_s, char* topic, zcoap_response_t
     zh->request->block_wise_transfer_size = block_wise_transfer_size; 
 
     response->data_lock = vosSemCreate(1); /*the corresponding destroy is done in zcoap_client_request when we clear the observation relationship*/
-
+    response->readable = 0;
     //setting the observation relationship timeout
     zh->obs_s = obs_timeout_s;
 
@@ -1072,11 +1081,13 @@ int zcoap_client_destroy(int zc){
         ESP_LOGE(TAG, "zcoap_client_destroy(), selected client unused");
         return 0;
     }
-#if SECURITY_LAYER
-    coap_free(zh->ca_mem);
-    coap_free(zh->cert_mem);
-    coap_free(zh->key_mem);
-#endif
+    if(zh->ca_mem)
+        coap_free(zh->ca_mem);
+    if(zh->cert_mem)
+        coap_free(zh->cert_mem);
+    if(zh->key_mem)
+        coap_free(zh->key_mem);
+
     coap_session_release(zh->session);
     coap_free_context(zh->ctx);
 
