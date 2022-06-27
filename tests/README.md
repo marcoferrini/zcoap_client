@@ -1,10 +1,11 @@
 # TESTS
   here's a list of the test cases supported
   
-  LEGEND
-    * [+] fully supported 
-    * [-] partially supported
+  ## LEGEND
+     [+] fully supported 
+     [-] partially supported
   
+  ## LIST
   * [+]perform GET transaction (CON mode)
   * [+]Perform POST transaction (CON mode)
   * [+]Perform PUT transaction (CON mode)
