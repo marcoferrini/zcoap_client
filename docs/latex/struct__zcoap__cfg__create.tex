@@ -1,0 +1,140 @@
+\hypertarget{struct__zcoap__cfg__create}{}\doxysection{\+\_\+zcoap\+\_\+cfg\+\_\+create Struct Reference}
+\label{struct__zcoap__cfg__create}\index{\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}}
+
+
+The structure used as input for the create.  
+
+
+
+
+{\ttfamily \#include $<$zcoap.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{struct__zcoap__cfg__create_aadc6835f1243ac4a7c82383549a1dfe1}{timeout\+\_\+s}}
+\item 
+unsigned int \mbox{\hyperlink{struct__zcoap__cfg__create_aef17731606d1a499d85a5263dd44fcf8}{ping\+\_\+seconds}}
+\item 
+char $\ast$ \mbox{\hyperlink{struct__zcoap__cfg__create_a31007ce06fb4442052fcfc801b981cfc}{srvr\+\_\+uri}}
+\item 
+void $\ast$ \mbox{\hyperlink{struct__zcoap__cfg__create_af7f70b2c1d406f7f69325add18a40afe}{cn\+\_\+call\+\_\+back\+\_\+arg}}
+\item 
+char $\ast$ \mbox{\hyperlink{struct__zcoap__cfg__create_a98d1c747fa6a6e12919eaad885bdc55e}{ca\+\_\+file}}
+\item 
+char $\ast$ \mbox{\hyperlink{struct__zcoap__cfg__create_a3cb375fd1b0a06c10b16b600d2d98136}{key\+\_\+file}}
+\item 
+char $\ast$ \mbox{\hyperlink{struct__zcoap__cfg__create_a09cb475edf59bc720cf406b9fd0931cf}{cert\+\_\+file}}
+\item 
+coap\+\_\+pki\+\_\+key\+\_\+t \mbox{\hyperlink{struct__zcoap__cfg__create_aa840449d08abdb3518018e730ac59b8c}{key\+\_\+type}}
+\item 
+coap\+\_\+asn1\+\_\+privatekey\+\_\+type\+\_\+t \mbox{\hyperlink{struct__zcoap__cfg__create_a48defcd0999c5f18ac4f9b7d8aa449b0}{private\+\_\+key\+\_\+type}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The structure used as input for the create. 
+
+
+
+Definition at line 23 of file zcoap.\+h.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct__zcoap__cfg__create_a98d1c747fa6a6e12919eaad885bdc55e}\label{struct__zcoap__cfg__create_a98d1c747fa6a6e12919eaad885bdc55e}} 
+\index{\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}!ca\_file@{ca\_file}}
+\index{ca\_file@{ca\_file}!\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}}
+\doxysubsubsection{\texorpdfstring{ca\_file}{ca\_file}}
+{\footnotesize\ttfamily char$\ast$ \+\_\+zcoap\+\_\+cfg\+\_\+create\+::ca\+\_\+file}
+
+points to the CA File location on disk which will be in P\+EM format, or N\+U\+LL. 
+
+Definition at line 30 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__zcoap__cfg__create_a09cb475edf59bc720cf406b9fd0931cf}\label{struct__zcoap__cfg__create_a09cb475edf59bc720cf406b9fd0931cf}} 
+\index{\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}!cert\_file@{cert\_file}}
+\index{cert\_file@{cert\_file}!\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}}
+\doxysubsubsection{\texorpdfstring{cert\_file}{cert\_file}}
+{\footnotesize\ttfamily char$\ast$ \+\_\+zcoap\+\_\+cfg\+\_\+create\+::cert\+\_\+file}
+
+points to the Private Key location on disk which will be in P\+EM format 
+
+Definition at line 32 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__zcoap__cfg__create_af7f70b2c1d406f7f69325add18a40afe}\label{struct__zcoap__cfg__create_af7f70b2c1d406f7f69325add18a40afe}} 
+\index{\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}!cn\_call\_back\_arg@{cn\_call\_back\_arg}}
+\index{cn\_call\_back\_arg@{cn\_call\_back\_arg}!\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}}
+\doxysubsubsection{\texorpdfstring{cn\_call\_back\_arg}{cn\_call\_back\_arg}}
+{\footnotesize\ttfamily void$\ast$ \+\_\+zcoap\+\_\+cfg\+\_\+create\+::cn\+\_\+call\+\_\+back\+\_\+arg}
+
+points to a user defined set of data that will get passed in to the validate\+\_\+cn\+\_\+call\+\_\+back() function 
+
+Definition at line 29 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__zcoap__cfg__create_a3cb375fd1b0a06c10b16b600d2d98136}\label{struct__zcoap__cfg__create_a3cb375fd1b0a06c10b16b600d2d98136}} 
+\index{\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}!key\_file@{key\_file}}
+\index{key\_file@{key\_file}!\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}}
+\doxysubsubsection{\texorpdfstring{key\_file}{key\_file}}
+{\footnotesize\ttfamily char$\ast$ \+\_\+zcoap\+\_\+cfg\+\_\+create\+::key\+\_\+file}
+
+points to the Public Certificate location on disk which will be in P\+EM format. 
+
+Definition at line 31 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__zcoap__cfg__create_aa840449d08abdb3518018e730ac59b8c}\label{struct__zcoap__cfg__create_aa840449d08abdb3518018e730ac59b8c}} 
+\index{\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}!key\_type@{key\_type}}
+\index{key\_type@{key\_type}!\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}}
+\doxysubsubsection{\texorpdfstring{key\_type}{key\_type}}
+{\footnotesize\ttfamily coap\+\_\+pki\+\_\+key\+\_\+t \+\_\+zcoap\+\_\+cfg\+\_\+create\+::key\+\_\+type}
+
+defines the format that the certificates / keys are provided in 
+
+Definition at line 33 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__zcoap__cfg__create_aef17731606d1a499d85a5263dd44fcf8}\label{struct__zcoap__cfg__create_aef17731606d1a499d85a5263dd44fcf8}} 
+\index{\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}!ping\_seconds@{ping\_seconds}}
+\index{ping\_seconds@{ping\_seconds}!\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}}
+\doxysubsubsection{\texorpdfstring{ping\_seconds}{ping\_seconds}}
+{\footnotesize\ttfamily unsigned int \+\_\+zcoap\+\_\+cfg\+\_\+create\+::ping\+\_\+seconds}
+
+minimum inactivity before sending a ping message ~\newline
+ 
+
+Definition at line 26 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__zcoap__cfg__create_a48defcd0999c5f18ac4f9b7d8aa449b0}\label{struct__zcoap__cfg__create_a48defcd0999c5f18ac4f9b7d8aa449b0}} 
+\index{\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}!private\_key\_type@{private\_key\_type}}
+\index{private\_key\_type@{private\_key\_type}!\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}}
+\doxysubsubsection{\texorpdfstring{private\_key\_type}{private\_key\_type}}
+{\footnotesize\ttfamily coap\+\_\+asn1\+\_\+privatekey\+\_\+type\+\_\+t \+\_\+zcoap\+\_\+cfg\+\_\+create\+::private\+\_\+key\+\_\+type}
+
+is the encoding type of the D\+ER encoded A\+S\+N.\+1 definition of the Private Key. 
+
+Definition at line 34 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__zcoap__cfg__create_a31007ce06fb4442052fcfc801b981cfc}\label{struct__zcoap__cfg__create_a31007ce06fb4442052fcfc801b981cfc}} 
+\index{\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}!srvr\_uri@{srvr\_uri}}
+\index{srvr\_uri@{srvr\_uri}!\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}}
+\doxysubsubsection{\texorpdfstring{srvr\_uri}{srvr\_uri}}
+{\footnotesize\ttfamily char$\ast$ \+\_\+zcoap\+\_\+cfg\+\_\+create\+::srvr\+\_\+uri}
+
+server uri 
+
+Definition at line 27 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__zcoap__cfg__create_aadc6835f1243ac4a7c82383549a1dfe1}\label{struct__zcoap__cfg__create_aadc6835f1243ac4a7c82383549a1dfe1}} 
+\index{\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}!timeout\_s@{timeout\_s}}
+\index{timeout\_s@{timeout\_s}!\_zcoap\_cfg\_create@{\_zcoap\_cfg\_create}}
+\doxysubsubsection{\texorpdfstring{timeout\_s}{timeout\_s}}
+{\footnotesize\ttfamily int \+\_\+zcoap\+\_\+cfg\+\_\+create\+::timeout\+\_\+s}
+
+client timeout (s) 
+
+Definition at line 25 of file zcoap.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{zcoap_8h}{zcoap.\+h}}\end{DoxyCompactItemize}

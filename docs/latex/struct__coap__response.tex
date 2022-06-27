@@ -1,0 +1,79 @@
+\hypertarget{struct__coap__response}{}\doxysection{\+\_\+coap\+\_\+response Struct Reference}
+\label{struct__coap__response}\index{\_coap\_response@{\_coap\_response}}
+
+
+The structure used to store information about the response.  
+
+
+
+
+{\ttfamily \#include $<$zcoap.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned char $\ast$ \mbox{\hyperlink{struct__coap__response_a452f78fcc74c4d28b0385940d65a1cbd}{data}}
+\item 
+unsigned int \mbox{\hyperlink{struct__coap__response_a12785e90f12097390cc3198ff9c06585}{data\+\_\+len}}
+\item 
+V\+Semaphore \mbox{\hyperlink{struct__coap__response_a8a340c3c1f8a35a1ed908031b3ce35b7}{data\+\_\+lock}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{struct__coap__response_a1a4119c26ffdfaee95d4af4e61d70d15}{readable}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The structure used to store information about the response. 
+
+
+
+Definition at line 59 of file zcoap.\+h.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct__coap__response_a452f78fcc74c4d28b0385940d65a1cbd}\label{struct__coap__response_a452f78fcc74c4d28b0385940d65a1cbd}} 
+\index{\_coap\_response@{\_coap\_response}!data@{data}}
+\index{data@{data}!\_coap\_response@{\_coap\_response}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily unsigned char$\ast$ \+\_\+coap\+\_\+response\+::data}
+
+points to a dynamic array containing the data of the response, is up to the user free the allocated memory 
+
+Definition at line 61 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__coap__response_a12785e90f12097390cc3198ff9c06585}\label{struct__coap__response_a12785e90f12097390cc3198ff9c06585}} 
+\index{\_coap\_response@{\_coap\_response}!data\_len@{data\_len}}
+\index{data\_len@{data\_len}!\_coap\_response@{\_coap\_response}}
+\doxysubsubsection{\texorpdfstring{data\_len}{data\_len}}
+{\footnotesize\ttfamily unsigned int \+\_\+coap\+\_\+response\+::data\+\_\+len}
+
+size of the dynamic array 
+
+Definition at line 62 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__coap__response_a8a340c3c1f8a35a1ed908031b3ce35b7}\label{struct__coap__response_a8a340c3c1f8a35a1ed908031b3ce35b7}} 
+\index{\_coap\_response@{\_coap\_response}!data\_lock@{data\_lock}}
+\index{data\_lock@{data\_lock}!\_coap\_response@{\_coap\_response}}
+\doxysubsubsection{\texorpdfstring{data\_lock}{data\_lock}}
+{\footnotesize\ttfamily V\+Semaphore \+\_\+coap\+\_\+response\+::data\+\_\+lock}
+
+Semaphore used to avoid simultaneus data writings and readings\+: to be used only when doing observation 
+
+Definition at line 63 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__coap__response_a1a4119c26ffdfaee95d4af4e61d70d15}\label{struct__coap__response_a1a4119c26ffdfaee95d4af4e61d70d15}} 
+\index{\_coap\_response@{\_coap\_response}!readable@{readable}}
+\index{readable@{readable}!\_coap\_response@{\_coap\_response}}
+\doxysubsubsection{\texorpdfstring{readable}{readable}}
+{\footnotesize\ttfamily uint8\+\_\+t \+\_\+coap\+\_\+response\+::readable}
+
+flag\+: 1 the data is valid, 0 is invalid. Useful only when doing observation with block wise tranfers 
+
+Definition at line 64 of file zcoap.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{zcoap_8h}{zcoap.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,184 @@
+\hypertarget{zcoap_8h}{}\doxysection{zcoap.\+h File Reference}
+\label{zcoap_8h}\index{zcoap.h@{zcoap.h}}
+{\ttfamily \#include \char`\"{}stdint.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}stddef.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$sys/time.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}vosal/vosal.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}coap.\+h\char`\"{}}\newline
+Include dependency graph for zcoap.\+h\+:
+% FIG 0
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct__zcoap__cfg__create}{\+\_\+zcoap\+\_\+cfg\+\_\+create}}
+\begin{DoxyCompactList}\small\item\em The structure used as input for the create. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct__coap__request}{\+\_\+coap\+\_\+request}}
+\begin{DoxyCompactList}\small\item\em The structure used to define a request. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct__coap__response}{\+\_\+coap\+\_\+response}}
+\begin{DoxyCompactList}\small\item\em The structure used to store information about the response. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{struct__zcoap__cfg__create}{\+\_\+zcoap\+\_\+cfg\+\_\+create}} \mbox{\hyperlink{zcoap_8h_ac5808a83568b8d2214cbdad0737162d2}{zcoap\+\_\+client\+\_\+cfg\+\_\+create\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The structure used as input for the create. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{struct__coap__request}{\+\_\+coap\+\_\+request}} \mbox{\hyperlink{zcoap_8h_a8565e3ae3e0b7cb260384222d5642dcc}{zcoap\+\_\+request\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The structure used to define a request. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{struct__coap__response}{\+\_\+coap\+\_\+response}} \mbox{\hyperlink{zcoap_8h_afe9ab2496c36ae849e718cdd5d77c255}{zcoap\+\_\+response\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The structure used to store information about the response. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{zcoap_8h_a9fff61b9af42cd2d140b363bc44dd11e}{zcoap\+\_\+client\+\_\+create}} (\mbox{\hyperlink{zcoap_8h_ac5808a83568b8d2214cbdad0737162d2}{zcoap\+\_\+client\+\_\+cfg\+\_\+create\+\_\+t}} $\ast$cfg)
+\begin{DoxyCompactList}\small\item\em setup function of the Co\+AP context and session with the server \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{zcoap_8h_a582a1d34ea96a82b4ecf3fd76bb8d492}{zcoap\+\_\+client\+\_\+request}} (\mbox{\hyperlink{zcoap_8h_a8565e3ae3e0b7cb260384222d5642dcc}{zcoap\+\_\+request\+\_\+t}} $\ast$request, int zc, \mbox{\hyperlink{zcoap_8h_afe9ab2496c36ae849e718cdd5d77c255}{zcoap\+\_\+response\+\_\+t}} $\ast$response, int observe)
+\begin{DoxyCompactList}\small\item\em Send a pdu with the specified properties. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{zcoap_8h_ad7b9e2d94c37bc85aa0e01169a62f89d}{zcoap\+\_\+client\+\_\+observe}} (int zc, int obs\+\_\+timeout\+\_\+s, char $\ast$topic, \mbox{\hyperlink{zcoap_8h_afe9ab2496c36ae849e718cdd5d77c255}{zcoap\+\_\+response\+\_\+t}} $\ast$response, size\+\_\+t block\+\_\+wise\+\_\+transfer\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Establish a observation relationship with the server. The client will wait until the relationship expires. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{zcoap_8h_a663dac7b04541476d74df3f7a48f6e9f}{zcoap\+\_\+client\+\_\+publish}} (int zc, char $\ast$topic, size\+\_\+t block\+\_\+wise\+\_\+transfer\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Updates the contents of a given resource. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{zcoap_8h_aa96fbfd8cbc7d1d470bb61faae66d40d}{zcoap\+\_\+client\+\_\+destroy}} (int zc)
+\begin{DoxyCompactList}\small\item\em Free the allocated memory to the given client. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{zcoap_8h_ac5808a83568b8d2214cbdad0737162d2}\label{zcoap_8h_ac5808a83568b8d2214cbdad0737162d2}} 
+\index{zcoap.h@{zcoap.h}!zcoap\_client\_cfg\_create\_t@{zcoap\_client\_cfg\_create\_t}}
+\index{zcoap\_client\_cfg\_create\_t@{zcoap\_client\_cfg\_create\_t}!zcoap.h@{zcoap.h}}
+\doxysubsubsection{\texorpdfstring{zcoap\_client\_cfg\_create\_t}{zcoap\_client\_cfg\_create\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{struct__zcoap__cfg__create}{\+\_\+zcoap\+\_\+cfg\+\_\+create}} \mbox{\hyperlink{zcoap_8h_ac5808a83568b8d2214cbdad0737162d2}{zcoap\+\_\+client\+\_\+cfg\+\_\+create\+\_\+t}}}
+
+
+
+The structure used as input for the create. 
+
+\mbox{\Hypertarget{zcoap_8h_a8565e3ae3e0b7cb260384222d5642dcc}\label{zcoap_8h_a8565e3ae3e0b7cb260384222d5642dcc}} 
+\index{zcoap.h@{zcoap.h}!zcoap\_request\_t@{zcoap\_request\_t}}
+\index{zcoap\_request\_t@{zcoap\_request\_t}!zcoap.h@{zcoap.h}}
+\doxysubsubsection{\texorpdfstring{zcoap\_request\_t}{zcoap\_request\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{struct__coap__request}{\+\_\+coap\+\_\+request}} \mbox{\hyperlink{zcoap_8h_a8565e3ae3e0b7cb260384222d5642dcc}{zcoap\+\_\+request\+\_\+t}}}
+
+
+
+The structure used to define a request. 
+
+\mbox{\Hypertarget{zcoap_8h_afe9ab2496c36ae849e718cdd5d77c255}\label{zcoap_8h_afe9ab2496c36ae849e718cdd5d77c255}} 
+\index{zcoap.h@{zcoap.h}!zcoap\_response\_t@{zcoap\_response\_t}}
+\index{zcoap\_response\_t@{zcoap\_response\_t}!zcoap.h@{zcoap.h}}
+\doxysubsubsection{\texorpdfstring{zcoap\_response\_t}{zcoap\_response\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{struct__coap__response}{\+\_\+coap\+\_\+response}} \mbox{\hyperlink{zcoap_8h_afe9ab2496c36ae849e718cdd5d77c255}{zcoap\+\_\+response\+\_\+t}}}
+
+
+
+The structure used to store information about the response. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{zcoap_8h_a9fff61b9af42cd2d140b363bc44dd11e}\label{zcoap_8h_a9fff61b9af42cd2d140b363bc44dd11e}} 
+\index{zcoap.h@{zcoap.h}!zcoap\_client\_create@{zcoap\_client\_create}}
+\index{zcoap\_client\_create@{zcoap\_client\_create}!zcoap.h@{zcoap.h}}
+\doxysubsubsection{\texorpdfstring{zcoap\_client\_create()}{zcoap\_client\_create()}}
+{\footnotesize\ttfamily int zcoap\+\_\+client\+\_\+create (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{zcoap_8h_ac5808a83568b8d2214cbdad0737162d2}{zcoap\+\_\+client\+\_\+cfg\+\_\+create\+\_\+t}} $\ast$}]{cfg }\end{DoxyParamCaption})}
+
+
+
+setup function of the Co\+AP context and session with the server 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cfg} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the slot in the coap\+\_\+cliets\mbox{[}\mbox{]} array if successful, -\/1 if fails 
+\end{DoxyReturn}
+\mbox{\Hypertarget{zcoap_8h_aa96fbfd8cbc7d1d470bb61faae66d40d}\label{zcoap_8h_aa96fbfd8cbc7d1d470bb61faae66d40d}} 
+\index{zcoap.h@{zcoap.h}!zcoap\_client\_destroy@{zcoap\_client\_destroy}}
+\index{zcoap\_client\_destroy@{zcoap\_client\_destroy}!zcoap.h@{zcoap.h}}
+\doxysubsubsection{\texorpdfstring{zcoap\_client\_destroy()}{zcoap\_client\_destroy()}}
+{\footnotesize\ttfamily int zcoap\+\_\+client\+\_\+destroy (\begin{DoxyParamCaption}\item[{int}]{zc }\end{DoxyParamCaption})}
+
+
+
+Free the allocated memory to the given client. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em zc} & The slot of the to be used client \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if succesfull, 0 if fails 
+\end{DoxyReturn}
+\mbox{\Hypertarget{zcoap_8h_ad7b9e2d94c37bc85aa0e01169a62f89d}\label{zcoap_8h_ad7b9e2d94c37bc85aa0e01169a62f89d}} 
+\index{zcoap.h@{zcoap.h}!zcoap\_client\_observe@{zcoap\_client\_observe}}
+\index{zcoap\_client\_observe@{zcoap\_client\_observe}!zcoap.h@{zcoap.h}}
+\doxysubsubsection{\texorpdfstring{zcoap\_client\_observe()}{zcoap\_client\_observe()}}
+{\footnotesize\ttfamily int zcoap\+\_\+client\+\_\+observe (\begin{DoxyParamCaption}\item[{int}]{zc,  }\item[{int}]{obs\+\_\+timeout\+\_\+s,  }\item[{char $\ast$}]{topic,  }\item[{\mbox{\hyperlink{zcoap_8h_afe9ab2496c36ae849e718cdd5d77c255}{zcoap\+\_\+response\+\_\+t}} $\ast$}]{response,  }\item[{size\+\_\+t}]{block\+\_\+wise\+\_\+transfer\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Establish a observation relationship with the server. The client will wait until the relationship expires. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em zc} & The slot of the to be used client \\
+\hline
+{\em obs\+\_\+timeout\+\_\+s} & The observation timeout(s), it must be shorter than the client timeout \\
+\hline
+{\em topic} & The path of the resource to observe \\
+\hline
+{\em response} & The structure where the response will be put into \\
+\hline
+{\em block\+\_\+wise\+\_\+transfer\+\_\+size} & if !=0 enable block wise transfers and specify the size of each block \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if succesfull, 0 if fails 
+\end{DoxyReturn}
+\mbox{\Hypertarget{zcoap_8h_a663dac7b04541476d74df3f7a48f6e9f}\label{zcoap_8h_a663dac7b04541476d74df3f7a48f6e9f}} 
+\index{zcoap.h@{zcoap.h}!zcoap\_client\_publish@{zcoap\_client\_publish}}
+\index{zcoap\_client\_publish@{zcoap\_client\_publish}!zcoap.h@{zcoap.h}}
+\doxysubsubsection{\texorpdfstring{zcoap\_client\_publish()}{zcoap\_client\_publish()}}
+{\footnotesize\ttfamily int zcoap\+\_\+client\+\_\+publish (\begin{DoxyParamCaption}\item[{int}]{zc,  }\item[{char $\ast$}]{topic,  }\item[{size\+\_\+t}]{block\+\_\+wise\+\_\+transfer\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Updates the contents of a given resource. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em zc} & The slot of the to be used client \\
+\hline
+{\em topic} & The path of the resource to update \\
+\hline
+{\em block\+\_\+wise\+\_\+transfer\+\_\+size} & if !=0 enable block wise transfers and specify the size of each block \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if succesfull, 0 if fails 
+\end{DoxyReturn}
+\mbox{\Hypertarget{zcoap_8h_a582a1d34ea96a82b4ecf3fd76bb8d492}\label{zcoap_8h_a582a1d34ea96a82b4ecf3fd76bb8d492}} 
+\index{zcoap.h@{zcoap.h}!zcoap\_client\_request@{zcoap\_client\_request}}
+\index{zcoap\_client\_request@{zcoap\_client\_request}!zcoap.h@{zcoap.h}}
+\doxysubsubsection{\texorpdfstring{zcoap\_client\_request()}{zcoap\_client\_request()}}
+{\footnotesize\ttfamily int zcoap\+\_\+client\+\_\+request (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{zcoap_8h_a8565e3ae3e0b7cb260384222d5642dcc}{zcoap\+\_\+request\+\_\+t}} $\ast$}]{request,  }\item[{int}]{zc,  }\item[{\mbox{\hyperlink{zcoap_8h_afe9ab2496c36ae849e718cdd5d77c255}{zcoap\+\_\+response\+\_\+t}} $\ast$}]{response,  }\item[{int}]{observe }\end{DoxyParamCaption})}
+
+
+
+Send a pdu with the specified properties. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & The request properties \\
+\hline
+{\em zc} & The slot of the to be used client \\
+\hline
+{\em response} & The structure where the response will be put into \\
+\hline
+{\em observe} & flag\+: 1 if an observation relationship need to be established, 0 if it is not \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if succesfull, 0 if fails 
+\end{DoxyReturn}

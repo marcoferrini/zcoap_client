@@ -1,0 +1,103 @@
+\hypertarget{struct__coap__request}{}\doxysection{\+\_\+coap\+\_\+request Struct Reference}
+\label{struct__coap__request}\index{\_coap\_request@{\_coap\_request}}
+
+
+The structure used to define a request.  
+
+
+
+
+{\ttfamily \#include $<$zcoap.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{struct__coap__request_a8539e3da9415c5644c6e56e81cde1c82}{type}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{struct__coap__request_a2900182d406f4e8ff3fc4c984886d99b}{code}}
+\item 
+char $\ast$ \mbox{\hyperlink{struct__coap__request_a8091e098b6a1b1a516a53c36b1635da5}{data}}
+\item 
+char $\ast$ \mbox{\hyperlink{struct__coap__request_add77ee1e1df5311ee334577a97d1a747}{path}}
+\item 
+char $\ast$ \mbox{\hyperlink{struct__coap__request_af8e481b343384780e685d3e9959e0ad7}{query}}
+\item 
+size\+\_\+t \mbox{\hyperlink{struct__coap__request_a03971ad8069ac937c3b708f856f1d758}{block\+\_\+wise\+\_\+transfer\+\_\+size}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The structure used to define a request. 
+
+
+
+Definition at line 43 of file zcoap.\+h.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct__coap__request_a03971ad8069ac937c3b708f856f1d758}\label{struct__coap__request_a03971ad8069ac937c3b708f856f1d758}} 
+\index{\_coap\_request@{\_coap\_request}!block\_wise\_transfer\_size@{block\_wise\_transfer\_size}}
+\index{block\_wise\_transfer\_size@{block\_wise\_transfer\_size}!\_coap\_request@{\_coap\_request}}
+\doxysubsubsection{\texorpdfstring{block\_wise\_transfer\_size}{block\_wise\_transfer\_size}}
+{\footnotesize\ttfamily size\+\_\+t \+\_\+coap\+\_\+request\+::block\+\_\+wise\+\_\+transfer\+\_\+size}
+
+if !=0 enable block wise transfers and specify the size of each block 
+
+Definition at line 51 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__coap__request_a2900182d406f4e8ff3fc4c984886d99b}\label{struct__coap__request_a2900182d406f4e8ff3fc4c984886d99b}} 
+\index{\_coap\_request@{\_coap\_request}!code@{code}}
+\index{code@{code}!\_coap\_request@{\_coap\_request}}
+\doxysubsubsection{\texorpdfstring{code}{code}}
+{\footnotesize\ttfamily uint8\+\_\+t \+\_\+coap\+\_\+request\+::code}
+
+request method 
+
+Definition at line 46 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__coap__request_a8091e098b6a1b1a516a53c36b1635da5}\label{struct__coap__request_a8091e098b6a1b1a516a53c36b1635da5}} 
+\index{\_coap\_request@{\_coap\_request}!data@{data}}
+\index{data@{data}!\_coap\_request@{\_coap\_request}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily char$\ast$ \+\_\+coap\+\_\+request\+::data}
+
+data to be attached to the request 
+
+Definition at line 47 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__coap__request_add77ee1e1df5311ee334577a97d1a747}\label{struct__coap__request_add77ee1e1df5311ee334577a97d1a747}} 
+\index{\_coap\_request@{\_coap\_request}!path@{path}}
+\index{path@{path}!\_coap\_request@{\_coap\_request}}
+\doxysubsubsection{\texorpdfstring{path}{path}}
+{\footnotesize\ttfamily char$\ast$ \+\_\+coap\+\_\+request\+::path}
+
+location of the requested resource 
+
+Definition at line 48 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__coap__request_af8e481b343384780e685d3e9959e0ad7}\label{struct__coap__request_af8e481b343384780e685d3e9959e0ad7}} 
+\index{\_coap\_request@{\_coap\_request}!query@{query}}
+\index{query@{query}!\_coap\_request@{\_coap\_request}}
+\doxysubsubsection{\texorpdfstring{query}{query}}
+{\footnotesize\ttfamily char$\ast$ \+\_\+coap\+\_\+request\+::query}
+
+
+
+Definition at line 49 of file zcoap.\+h.
+
+\mbox{\Hypertarget{struct__coap__request_a8539e3da9415c5644c6e56e81cde1c82}\label{struct__coap__request_a8539e3da9415c5644c6e56e81cde1c82}} 
+\index{\_coap\_request@{\_coap\_request}!type@{type}}
+\index{type@{type}!\_coap\_request@{\_coap\_request}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily uint8\+\_\+t \+\_\+coap\+\_\+request\+::type}
+
+message type\+: C\+ON, N\+ON 
+
+Definition at line 45 of file zcoap.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{zcoap_8h}{zcoap.\+h}}\end{DoxyCompactItemize}
