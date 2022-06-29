@@ -1083,7 +1083,6 @@ int zcoap_client_destroy(int zc){
 
 
     /**/
-    //forse andrebbe distrutta anche la optlist associata alla struttura request 
     zh->used = 0; 
     
     return 1;  
