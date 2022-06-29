@@ -3,6 +3,6 @@
   
 ## TODO 
   * Test DTLS layer with PKI
-  * Resolve a bug: the program crashes when doing a block wise transfer with a payload larger than 143 bytes (size of the entire payload not of each block)
+  
   
   
