@@ -68,7 +68,7 @@ typedef struct _zcoap_client
     int obs_s;
 
     int token; 
-    int last_observe_token; //last used token  for establishing  a observation relationship 
+    int last_observe_token; //last token used to establish a observation relationship 
     int last_used_token; //last token used
     
     coap_uri_t dst_uri;
