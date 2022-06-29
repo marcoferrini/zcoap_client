@@ -5,7 +5,9 @@
 Script used to test the client:
     basically it creates a client that creates a resource and gets its content
     with the possibility of establishing a observation relationship.
-    Finally the client is destroyed
+    Finally the client is destroyed.
+   
+ I use the CoAP server provided by libcoap
 */
 
 
