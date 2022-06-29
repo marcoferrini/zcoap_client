@@ -1,4 +1,3 @@
-//da riguardare se tutte queste include sono necessarie
 
 #include "libcoap.h"
 #include "coap_dtls.h"
@@ -35,18 +34,9 @@ const static char *TAG = "CoAP_client";
 #define COAP_DEFAULT_TIME_SEC 5
 #define ZCOAP_CLIENT_NUM 2
 
-/*WORK IN PROGRESS DEFINE*/
-#define SECURITY_LAYER 0
-
-
-typedef struct{
-    coap_binary_t *token;
-    int observe;
-} track_token_t;
-
-typedef struct _zcoap_config  //struttura per inizializzare il client
+typedef struct _zcoap_config  
 {
-//#if SECURITY_LAYER
+
     void *cn_call_back_arg;
     char* ca_file;   
     char *key_file;
@@ -54,7 +44,6 @@ typedef struct _zcoap_config  //struttura per inizializzare il client
 
     coap_pki_key_t key_type;
     coap_asn1_privatekey_type_t private_key_type; 
-//#endif
 
     int timeout_s; 
     unsigned int ping_seconds;   
@@ -88,11 +77,10 @@ typedef struct _zcoap_client
     coap_session_t *session;
     coap_context_t * ctx;
     
-// SECURITY_LAYER
     uint8_t *cert_mem;
     uint8_t *key_mem; 
     uint8_t *ca_mem;
-//end SECURITY_LAYER
+
 
 }zcoap_client_t;
 
@@ -103,34 +91,33 @@ coap_pdu_t* zcoap_new_request(int zc, int observe, coap_block_t *block_wise_tran
     zcoap_client_t *zh = &coap_clients[zc];
 
     uint8_t token[4]; 
-
+    
     coap_pdu_t* pdu_to_be_sent = coap_new_pdu(zh->session); 
     coap_optlist_t* optlist; 
 
-    //options
+    
     int res; 
     unsigned char _buf[BUFSIZE];
     unsigned char *buf;
     size_t buflen;
 
-    /*block transfer*/
+    
     uint16_t opt = 0; /*it could be interpreted as COAP_MESSAGE_CON but it should not create any problem */
     unsigned int opt_length; 
 
     size_t size = 0;
     char* temp;
 
-    //setto il tipo, ID e codice 
+    
     pdu_to_be_sent->tid = coap_new_message_id(zh->session);
     pdu_to_be_sent->code = zh->request->code;
     pdu_to_be_sent->type = zh->request->type;
    
-   //setting token
+   /***********************************token**********************************************/
 
     switch (observe)
     {
     case -1:  //clear observe 
-        //zh->last_used_token = zh->token;
         zh->token = zh->last_observe_token;
         break;
     case 1: //set observe 
@@ -156,7 +143,7 @@ coap_pdu_t* zcoap_new_request(int zc, int observe, coap_block_t *block_wise_tran
         return NULL;
     }
     
-    // option
+    /***********************************option**********************************************/
 
     //creating a new optlist and adding host
     optlist = coap_new_optlist(COAP_OPTION_URI_HOST, zh->dst_uri.host.length, zh->dst_uri.host.s);
@@ -201,7 +188,7 @@ coap_pdu_t* zcoap_new_request(int zc, int observe, coap_block_t *block_wise_tran
             }
     }
 
-    //eventually adding observe option 
+    //eventually observe option 
 
     if ((pdu_to_be_sent->code == COAP_REQUEST_GET))
     {
@@ -238,7 +225,7 @@ coap_pdu_t* zcoap_new_request(int zc, int observe, coap_block_t *block_wise_tran
         }
     }
 
-    /*adding block1 and block2 tranfer, for the block1 option we have to now the size of the payload, stored at this point in the variable size */
+    /*adding block1 and block2 tranfer, for the block1 option we have to know the size of the payload, stored at this point in the variable size */
     if(block_wise_transfer->szx){
         
         buf = _buf;
@@ -269,10 +256,9 @@ coap_pdu_t* zcoap_new_request(int zc, int observe, coap_block_t *block_wise_tran
         }
     }
     
-    //forse vanno aggiunte altre opzioni 
     coap_add_optlist_pdu(pdu_to_be_sent, &optlist);
 
-    //aggiungo il payload
+    /***********************************payload**********************************************/
     
     
     if(zh->request->data){
@@ -292,7 +278,6 @@ coap_pdu_t* zcoap_new_request(int zc, int observe, coap_block_t *block_wise_tran
         
     }
     coap_delete_optlist(optlist); 
-    //coap_show_pdu(LOG_EMERG, pdu_to_be_sent); 
     return pdu_to_be_sent; 
 
 }
@@ -320,7 +305,6 @@ void zcoap_get_coapaddr(coap_uri_t* coap_uri, coap_address_t* coap_addr){
 
     if (hp == NULL) {
         ESP_LOGE(TAG, "zcoap_get_coapaddr(), DNS lookup failed, error = %i",h_errno);
-        //vTaskDelay(1000 / portTICK_PERIOD_MS);
         coap_addr->size = 0;
         return;
     }
@@ -428,32 +412,30 @@ static void nack_handler(coap_context_t* context, coap_session_t *session, coap_
 static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap_pdu_t *sent, 
                                 coap_pdu_t *received, const coap_tid_t id)
 {   
-    
+
+
     unsigned char *data = NULL;
     size_t data_len = 0;
 
-    unsigned char *temp_data_pointer; 
+    unsigned char *temp_data_pointer= NULL; 
     unsigned int block_num; 
 
     int block2_flag; 
     
-    //size_t block_wise_transfer_size = 0;
     coap_pdu_t *pdu = NULL;
-    coap_opt_t *block_opt;
+    coap_opt_t *block_opt = NULL;
 
-    coap_opt_t* opt;
+    coap_opt_t* opt = NULL;
     coap_opt_iterator_t opt_iter;
-    //unsigned char buf[4];
-    //coap_optlist_t *option;
 
-    //coap_opt_t* opt;
     coap_tid_t tid;
+
+    coap_block_t block;
+
 
     //printing for debugging purposes 
     ESP_LOGD(TAG, "response_handler() has started");
-    //coap_show_pdu(LOG_EMERG, received);
 
-    //search the used client
     zcoap_client_t* zh = NULL;
     int slot; 
     for (slot = 0; slot < ZCOAP_CLIENT_NUM; slot++)
@@ -466,7 +448,8 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
         }
         
     }
-   //check token
+  /***********************************token check**********************************************/
+
    //WARNING: check token, works only when the tokens are generated sequentially, there must be security layer
     if(*received->token > (uint8_t)zh->token){
         ESP_LOGE(TAG, "unscheduled message");
@@ -477,6 +460,7 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
         return;
     }
 
+
     if(received->type == COAP_MESSAGE_RST)
     {
         ESP_LOGI(TAG, "got a reset \n");
@@ -484,7 +468,8 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
         return; 
     } 
 
-    //TODO: potrebbe aver senso descriminare in modo più dettagliato le risposte del server
+
+    /***********************************response computing**********************************************/
     if (COAP_RESPONSE_CLASS(received->code) == 2)
     {
     //success
@@ -498,7 +483,7 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
 
             }
 
-            /* Need to see if blocked response */
+        /* Need to see if blocked response */
         block_opt = coap_check_option(received, COAP_OPTION_BLOCK2, &opt_iter);
         block2_flag = 1; 
         if (!block_opt)
@@ -507,7 +492,7 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
             block_opt = coap_check_option(received, COAP_OPTION_BLOCK1, &opt_iter);
         }
         /*if there is no block 1 or block 2 option block2_flag will be set to 1 but not used*/
-        if (block_opt) {
+        if (block_opt){
             uint16_t blktype = opt_iter.type;
 
             if (coap_opt_block_num(block_opt) == 0) {
@@ -519,7 +504,7 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
             if (coap_get_data(received, &data_len, &data)) {
                 printf("Received: %.*s\n", (int)data_len, data);
             }
-
+            
             if(block2_flag){
                     block_num = coap_opt_block_num(block_opt);
 
@@ -530,18 +515,43 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
                             if(!opt){
                                 ESP_LOGE(TAG, "no size2 option in the received message");
                             }
+                            size_t opt_length = coap_opt_length(opt); 
+                            uint32_t size2; 
+
+                            switch (opt_length)
+                            {
+                            case 1:
+                                size2 = *coap_opt_value(opt);
+                                break;
+                            case 2:
+                                size2 = *coap_opt_value(opt) << 8 | *(coap_opt_value(opt) + 1); 
+                                break;
+                            case 3: 
+                                size2 = *coap_opt_value(opt)<<16|*(coap_opt_value(opt)+1) << 8 | *(coap_opt_value(opt) + 2); 
+                                break;
+                            case 4: 
+                                size2 = *coap_opt_value(opt)<< 24|*(coap_opt_value(opt)+1)<<16 | *(coap_opt_value(opt)+2) << 8 | *(coap_opt_value(opt) + 3);
+                            default:
+                                size2 = 0; 
+                                break;
+                            }
+                        
                             if(zh->obs_started){
-                                vosSemWait(zh->response->data_lock); /*the corresponding signal is done when the trasmission of the whole sequence ends*/
+                                vosSemWait(zh->response->data_lock);
                                 zh->response->readable = 0; 
                             }
-                            zh->response->data = realloc(zh->response->data,*coap_opt_value(opt));
                             
+                            zh->response->data = realloc(zh->response->data, size2);
                             memcpy(zh->response->data, data, data_len); 
+
                             if(zh->obs_started)
-                                vosSemSignal(zh->response->data_lock);
-                            zh->response->data_len = *coap_opt_value(opt);
+                                vosSemSignal(zh->response->data_lock); 
+                            zh->response->data_len = size2;
 
-
+                            
+                            /*ESP_LOGD(TAG, "size2 = %u", size2);
+                            ESP_LOGD(TAG, "lenght = %u", opt_length);*/
+                            
                         }else{  /*first and last*/
                             if(zh->obs_started)
                                 vosSemWait(zh->response->data_lock);
@@ -553,7 +563,7 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
                         }
                         
 
-                    }else{ /*it is not the first block of the sequence so zh->response->data is already pointing to a dinamic array of the appropriate size*/
+                    }else{ /*it is not the first block of the sequence so zh->response->data is already pointing to a dinamic array of the right size*/
                         if(zh->obs_started)
                                 vosSemWait(zh->response->data_lock);
                         temp_data_pointer = zh->response->data + (COAP_OPT_BLOCK_SZX(block_opt)<<5)*block_num; 
@@ -562,13 +572,14 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
                         if(zh->obs_started)
                                 vosSemSignal(zh->response->data_lock);
                     }
-
+                
             }
+
             /*check if there is more*/
             if (COAP_OPT_BLOCK_MORE(block_opt)) {
 
                 //input of zcoap_new_request
-                coap_block_t block; 
+                 
                 block.szx = COAP_OPT_BLOCK_SZX(block_opt);
                 block.num = coap_opt_block_num(block_opt);
                 if(!block2_flag){
@@ -578,7 +589,6 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
                             /* Recompute the block number of the previous packet given the new block size */
                             block.num = (bytes_sent >> (block.szx+4)) - 1; 
                             zh->request->block_wise_transfer_size = block.szx; 
-                    
                         }else{
                             ESP_LOGD(TAG,"ignoring request to increase Block1 size, "
                                 "next block is not aligned on requested block size boundary. " );
@@ -587,33 +597,30 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
                 } 
                 block.num++; 
 
-
                 pdu = zcoap_new_request(slot, 0, &block); 
                 if(!pdu){
-                    ESP_LOGE(TAG, "coap_new_request_has_failed"); 
+                    ESP_LOGE(TAG, "zcoap_new_request_has_failed"); 
                     goto end; 
                 }
             
                 /*printing for debugging purposes*/
                 //coap_show_pdu(LOG_EMERG, pdu);
 
-
                 tid = coap_send(session, pdu);
 
                 if (tid != COAP_INVALID_TID) {
                     zh->resp_wait = 1;
                     zh->timeout_ms = zh->timeout_s * 1000;
-                    //ESP_LOGD(TAG, "obs timeout = %i", zh->obs_ms); 
                 }
 
             }else{
                 zh->response->readable = 1;
                 zh->resp_wait = zh->doing_observe ? zh->obs_started : 0;
             }
+
             return;
             printf("\n");
         }else{
-
             if (coap_get_data(received, &data_len, &data)) {
                 printf("Received: %.*s\n", (int)data_len, data);
             }
@@ -626,23 +633,20 @@ static void response_handler(coap_context_t *ctx, coap_session_t *session,  coap
             zh->response->data_len = data_len;
             if(zh->obs_started)
                 vosSemSignal(zh->response->data_lock);
-            ; 
         }
         
          
 
     
-    } else if (COAP_RESPONSE_CLASS(received->code)== 4){
+    }else if (COAP_RESPONSE_CLASS(received->code)== 4){
         ESP_LOGE(TAG, "client error");
 
-        
-    } else if (COAP_RESPONSE_CLASS(received->code)== 5){
+    }else if (COAP_RESPONSE_CLASS(received->code)== 5){
         ESP_LOGE(TAG, "server error");
     }
 
 end: 
-   zh->resp_wait = zh->doing_observe ? zh->obs_started : 0;
-
+    zh->resp_wait = zh->doing_observe ? zh->obs_started : 0;
     return;
 }
 
@@ -687,16 +691,16 @@ int zcoap_client_create (zcoap_client_cfg_create_t *cfg)
     config.timeout_s = cfg->timeout_s;
     config.server_uri = cfg->srvr_uri;
 
-//#if SECURITY_LAYER
+
     config.cn_call_back_arg = cfg->cn_call_back_arg;
     config.ca_file = cfg->ca_file;
     config.key_type = cfg->key_type; 
     config.key_file = cfg->key_file;
     config.private_key_type = cfg->private_key_type;
     config.cert_file = cfg->cert_file;   
-//#endif
+
     
-    //split server_uri and set coap_uri
+    /***********************************server address setting**********************************************/
      if(coap_split_uri((uint8_t*)config.server_uri, strlen(config.server_uri), &uri) == -1){
         ESP_LOGE(TAG, "zcoap_client_create(), CoAP server uri error");
         return -1;
@@ -716,7 +720,7 @@ int zcoap_client_create (zcoap_client_cfg_create_t *cfg)
     }
     
     
-    //new context 
+    /***********************************new context**********************************************/ 
     context= coap_new_context(NULL);
     if (!context) {
             ESP_LOGE(TAG, "zcoap_client_create(), coap_new_context() has failed");
@@ -725,14 +729,14 @@ int zcoap_client_create (zcoap_client_cfg_create_t *cfg)
 
     coap_context_set_keepalive(context, config.ping_seconds);
 
-    //new session
-//#if SECURITY_LAYER
+    /***********************************new session**********************************************/
+
     if(uri.scheme == COAP_URI_SCHEME_COAPS){
-        /*if (!coap_dtls_is_supported()){
+        if (!coap_dtls_is_supported()){
             ESP_LOGE(TAG,"scheme not supported");
             slot = -1; 
             goto clean_up;
-        } */
+        } 
 
         memset(client_sni, 0, sizeof(client_sni)); 
         memset(&dtls_pki, 0, sizeof(dtls_pki));
@@ -794,7 +798,6 @@ int zcoap_client_create (zcoap_client_cfg_create_t *cfg)
                                                   uri.scheme == COAP_URI_SCHEME_COAPS ? COAP_PROTO_DTLS : COAP_PROTO_TLS,
                                                   &dtls_pki);
     }else{
-//#endif
     
         coap_session = coap_new_client_session(context, NULL, &server_address, COAP_PROTO_UDP);
     }
@@ -833,14 +836,11 @@ int zcoap_client_create (zcoap_client_cfg_create_t *cfg)
     coap_clients[slot].doing_observe = 0; 
     coap_clients[slot].obs_started = 0; 
 
-//#if SECURITY_LAYER
+
     coap_clients[slot].ca_mem = ca_mem; 
     coap_clients[slot].cert_mem = cert_mem; 
     coap_clients[slot].key_mem = key_mem;  
-//#endif
-    
-    
-    
+      
     return slot;    
 
     clean_up:
@@ -850,14 +850,12 @@ int zcoap_client_create (zcoap_client_cfg_create_t *cfg)
         if (context) {
             coap_free_context(context);
         }
-//#if SECURITY_LAYER
         if(cert_mem)
             coap_free(cert_mem); 
         if(ca_mem)
             coap_free(ca_mem); 
         if(key_mem)
             coap_free(key_mem); 
-//#endif
         return -1;
 
 
@@ -869,11 +867,9 @@ int zcoap_client_request (zcoap_request_t *request, int zc, zcoap_response_t *re
                                 
     zcoap_client_t *zh = &coap_clients[zc];
 
-    //per il wait
     int result = 0; 
     
 
-    /*input of zcoap_new_request*/
     coap_block_t block_wise_transfer; 
 
     if(!zh->used){
@@ -887,8 +883,8 @@ int zcoap_client_request (zcoap_request_t *request, int zc, zcoap_response_t *re
     zh->response->data = NULL; 
     
     
-    //ESP_LOGD(TAG, "path =%s ", zh->request->path);
-    //aggiorno il path 
+    
+    /*****************************path setting*******************************/
 
     size_t size = 0;
     char* temp = zh->request->path;
@@ -905,7 +901,7 @@ int zcoap_client_request (zcoap_request_t *request, int zc, zcoap_response_t *re
 
     //ESP_LOGD(TAG, "query =%s ", zh->request->query);
 
-    //aggiorno la query
+    /*************************query setting******************************/
     size = 0;
     temp = zh->request->query;
     
@@ -914,7 +910,7 @@ int zcoap_client_request (zcoap_request_t *request, int zc, zcoap_response_t *re
             ++size;
         }
     }
-    //ESP_LOGD(TAG, "query size = %i", size);
+
     zh->dst_uri.query.s =(uint8_t*) zh->request->query;
     zh->dst_uri.query.length = size;
 
@@ -930,9 +926,6 @@ int zcoap_client_request (zcoap_request_t *request, int zc, zcoap_response_t *re
         return 0; 
     }
 
-    //la send descrimina fra con e non con e gestisce l'ack
-    //la send libera lo spazio allocato al PDU => devo essere sicuro di non utilizzare un pdu dopo la send 
-
     //printing the pdu for debugging purposes
     //coap_show_pdu(LOG_EMERG, pdu_to_be_sent);
    
@@ -940,14 +933,11 @@ int zcoap_client_request (zcoap_request_t *request, int zc, zcoap_response_t *re
     if(coap_send(zh->session, pdu_to_be_sent) == COAP_INVALID_TID)
         ESP_LOGE(TAG, "zcoap_client_request(), coap_send() has failed");
     
-    
-    
     ESP_LOGD(TAG, "zcoap_client_request, coap_send() succeded");
-    ESP_LOGD(TAG, "timeout = %i", zh->timeout_s);
-
+    
     zh->timeout_ms = zh->timeout_s*1000; 
 
-    //aspetta una risposta 
+    /******************************************response wait************************************/
     while(zh->resp_wait){
         uint32_t wait_ms; 
 
@@ -1061,7 +1051,7 @@ int zcoap_client_publish(int zc, char* topic, size_t block_wise_transfer_size){
 
     zh->request->block_wise_transfer_size = block_wise_transfer_size; 
 
-     //sending the request
+    //sending the request
     if (!zcoap_client_request(zh->request, zc, zh->response, 0))
     {
         ESP_LOGE(TAG, "zcoap_client_publish(), zcoap_client_request() has failed");
